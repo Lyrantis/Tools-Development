@@ -17,4 +17,3 @@ def FillCombo(combo_box, accepted_classes):
             assetNameStartPos = allAssetStringSplit[i].index('"') + 1
             assetNameEndPos = allAssetStringSplit[i].index('"', classNameStartPos)
             combo_box.add_option(allAssetStringSplit[i][assetNameStartPos : assetNameEndPos])
-    unreal.AssetToolsHelpers.get_asset_tools().open_editor_for_assets(unreal.load_asset('/Game/Folder/Spaff'))
