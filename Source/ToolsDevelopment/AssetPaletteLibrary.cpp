@@ -20,7 +20,7 @@ bool UAssetPaletteLibrary::ToggleEditButtonColour(UButton* editButton, bool edit
 	return !editMode;
 }
 
-void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniformGridPanel* grid, EDirection directionToMove)
+void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, TMap<UUserWidget*, UUniformGridSlot*> nodeSlots, EDirection directionToMove)
 {
 	int nodeRow = nodeToMove->GetRow();
 	int nodeColumn = nodeToMove->GetColumn();
@@ -30,26 +30,75 @@ void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniform
 	case EDirection::UP:
 		if (nodeRow > 0)
 		{
-			TArray<UWidget*> nodes = grid->GetAllChildren();
-			for (UWidget* Node : nodes)
+			for (TPair<UUserWidget*, UUniformGridSlot*> pair : nodeSlots)
 			{
-				UUniformGridSlot nodeSlot = Node->Slot;
-				if (Node.)
+				if (pair.Value->GetColumn() == nodeColumn && pair.Value->GetRow() == nodeRow - 1)
+				{
+					pair.Value->SetRow(nodeRow);
+				}
 			}
 			nodeToMove->SetRow(nodeRow - 1);
 		}
 		break;
 	case EDirection::DOWN:
+		for (TPair<UUserWidget*, UUniformGridSlot*> pair : nodeSlots)
+		{
+			if (pair.Value->GetColumn() == nodeColumn && pair.Value->GetRow() == nodeRow + 1)
+			{
+				pair.Value->SetRow(nodeRow);
+			}
+		}
 		nodeToMove->SetRow(nodeRow + 1);
 		break;
 	case EDirection::LEFT:
 		if (nodeColumn > 0)
 		{
+			for (TPair<UUserWidget*, UUniformGridSlot*> pair : nodeSlots)
+			{
+				if (pair.Value->GetColumn() == nodeColumn - 1 && pair.Value->GetRow() == nodeRow)
+				{
+					pair.Value->SetColumn(nodeColumn);
+				}
+			}
 			nodeToMove->SetColumn(nodeColumn - 1);
 		}
 		break;
 	case EDirection::RIGHT:
+		for (TPair<UUserWidget*, UUniformGridSlot*> pair : nodeSlots)
+		{
+			if (pair.Value->GetColumn() == nodeColumn + 1 && pair.Value->GetRow() == nodeRow)
+			{
+				pair.Value->SetColumn(nodeColumn);
+			}
+		}
 		nodeToMove->SetColumn(nodeColumn + 1);
 		break;
+	}
+}
+
+void UAssetPaletteLibrary::AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPanel* grid, TMap<UUserWidget*, UUniformGridSlot*> slotsTaken)
+{
+	int slotsNum = slotsTaken.Num();
+	if (slotsNum == 0)
+		slotsTaken.FindOrAdd(nodeToAdd, grid->AddChildToUniformGrid(nodeToAdd, 0, 0));
+		
+	for (int i = 0; i < slotsNum; ++i)
+	{
+		int row = i / 8;
+		int col = i % 8;
+
+		bool flag = false;
+		for (TPair<UUserWidget*, UUniformGridSlot*> pair : slotsTaken)
+		{
+			if (pair.Value->GetRow() == row && pair.Value->GetColumn() == col)
+			{
+				flag = true;
+			}
+		}
+		if (!flag)
+		{
+			slotsTaken.Add(nodeToAdd, grid->AddChildToUniformGrid(nodeToAdd, row, col));
+			break;
+		}
 	}
 }

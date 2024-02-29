@@ -25,10 +25,13 @@ class TOOLSDEVELOPMENT_API UAssetPaletteLibrary : public UBlueprintFunctionLibra
 	GENERATED_BODY()
 
 public:
-	
+	 
 	UFUNCTION(BlueprintCallable)
 	static bool ToggleEditButtonColour(UButton* editButton, bool editMode);
 
 	UFUNCTION(BlueprintCallable)
-	static void MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniformGridPanel* grid, EDirection directionToMove);
+	static void MoveNodeInGrid(UUniformGridSlot* nodeToMove, TMap<UUserWidget*, UUniformGridSlot*> nodeSlots, EDirection directionToMove);
+
+	UFUNCTION(BlueprintCallable)
+	static void AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPanel* grid, TMap<UUserWidget*, UUniformGridSlot*> slotsTaken);
 };
