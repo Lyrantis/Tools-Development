@@ -30,5 +30,5 @@ public:
 	static bool ToggleEditButtonColour(UButton* editButton, bool editMode);
 
 	UFUNCTION(BlueprintCallable)
-	static void MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniformGridPanel* panel, EDirection directionToMove);
+	static void MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniformGridPanel* grid, EDirection directionToMove);
 };

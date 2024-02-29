@@ -20,7 +20,7 @@ bool UAssetPaletteLibrary::ToggleEditButtonColour(UButton* editButton, bool edit
 	return !editMode;
 }
 
-void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniformGridPanel* panel, EDirection directionToMove)
+void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniformGridPanel* grid, EDirection directionToMove)
 {
 	int nodeRow = nodeToMove->GetRow();
 	int nodeColumn = nodeToMove->GetColumn();
@@ -30,6 +30,12 @@ void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, UUniform
 	case EDirection::UP:
 		if (nodeRow > 0)
 		{
+			TArray<UWidget*> nodes = grid->GetAllChildren();
+			for (UWidget* Node : nodes)
+			{
+				UUniformGridSlot nodeSlot = Node->Slot;
+				if (Node.)
+			}
 			nodeToMove->SetRow(nodeRow - 1);
 		}
 		break;
