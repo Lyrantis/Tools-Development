@@ -37,6 +37,5 @@ def FillCombo(combo_box, excluded_folders, excluded_classes, excluded_names) -> 
         if not flag:
             combo_box.add_option(assetName)
             file_paths.append(filepath)
-            unreal.log("Name : " + assetName + "   Class : " + assetClass + "   FilePath : " + filepath)
 
     return file_paths
