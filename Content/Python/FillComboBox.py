@@ -7,6 +7,8 @@ file_paths = []
 
 def FillCombo(combo_box, excluded_folders, excluded_classes, excluded_names) -> list[str]:
 
+    combo_box.clear_options()
+
     assetReg = unreal.AssetRegistryHelpers.get_asset_registry()
     allAssetsData = assetReg.get_assets_by_path("/Game/", True)
     for asset in allAssetsData:

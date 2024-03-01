@@ -8,6 +8,7 @@
 #include "AssetPaletteLibrary.generated.h"
 
 class UButton;
+class UUserWidget;
 class UUniformGridSlot;
 class UUniformGridPanel;
 
@@ -33,5 +34,8 @@ public:
 	static void MoveNodeInGrid(UUniformGridSlot* nodeToMove, TMap<UUserWidget*, UUniformGridSlot*> nodeSlots, EDirection directionToMove);
 
 	UFUNCTION(BlueprintCallable)
-	static void AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPanel* grid, TMap<UUserWidget*, UUniformGridSlot*> slotsTaken);
+	static UUniformGridSlot* AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPanel* grid, TMap<UUserWidget*, UUniformGridSlot*> slotsTaken);
+
+	UFUNCTION(BlueprintCallable)
+	static TArray<int> FindNextAvailableGridLocation(TMap<UUserWidget*, UUniformGridSlot*> slotsTaken);
 };

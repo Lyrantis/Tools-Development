@@ -76,12 +76,14 @@ void UAssetPaletteLibrary::MoveNodeInGrid(UUniformGridSlot* nodeToMove, TMap<UUs
 	}
 }
 
-void UAssetPaletteLibrary::AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPanel* grid, TMap<UUserWidget*, UUniformGridSlot*> slotsTaken)
+UUniformGridSlot* UAssetPaletteLibrary::AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPanel* grid, TMap<UUserWidget*, UUniformGridSlot*> slotsTaken)
 {
 	int slotsNum = slotsTaken.Num();
 	if (slotsNum == 0)
-		slotsTaken.FindOrAdd(nodeToAdd, grid->AddChildToUniformGrid(nodeToAdd, 0, 0));
+	{
+		return grid->AddChildToUniformGrid(nodeToAdd, 0, 0);
 		
+	}
 	for (int i = 0; i < slotsNum; ++i)
 	{
 		int row = i / 8;
@@ -97,8 +99,34 @@ void UAssetPaletteLibrary::AddNodeToGrid(UUserWidget* nodeToAdd, UUniformGridPan
 		}
 		if (!flag)
 		{
-			slotsTaken.Add(nodeToAdd, grid->AddChildToUniformGrid(nodeToAdd, row, col));
+			return grid->AddChildToUniformGrid(nodeToAdd, row, col);
 			break;
 		}
 	}
+	return nullptr;
+}
+
+TArray<int> UAssetPaletteLibrary::FindNextAvailableGridLocation(TMap<UUserWidget*, UUniformGridSlot*> slotsTaken)
+{
+	bool freeSpotFound = false;
+	int i = 0;
+	while (!freeSpotFound)
+	{
+		int row = i / 8;
+		int col = i % 8;
+		freeSpotFound = true;
+		for (TPair<UUserWidget*, UUniformGridSlot*> pair : slotsTaken)
+		{
+			if (pair.Value->GetColumn() == col && pair.Value->GetRow() == row)
+			{
+				freeSpotFound = false;
+			}
+		}
+		if (freeSpotFound)
+		{
+			return {row, col};
+		}
+		i++;
+	}
+	return {0, 0};
 }
